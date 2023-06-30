@@ -24,18 +24,18 @@ void servicios(int (*Servicio)[20]) {
     char respuesta;
 
     servicios:
-    printf("Elija los servicios que desea para su mascota:\n");
-    printf("1. ID: 1111 Peluqueada $10 (servicio de corte de pelo con limpieza)\n");
-    printf("2. ID: 2222 Desparasitacion $40 (servicio que garantiza la salud gastrointestinal)\n");
-    printf("3. ID: 3333 Adiestramiento $90 (servicio que incluye 4 semanas de entrenamiento)\n");
+    printf("Elija el ID de los servicios que desea para su mascota:\n");
+    printf("ID: 1111 Peluqueada $10 (servicio de corte de pelo con limpieza)\n");
+    printf("ID: 2222 Desparasitacion $40 (servicio que garantiza la salud gastrointestinal)\n");
+    printf("ID: 3333 Adiestramiento $90 (servicio que incluye 4 semanas de entrenamiento)\n");
     printf("Seleccione una opcion: ");
     scanf("%d", &opcion3);
 
-    int *pServicio = *Servicio;
-    int *pPrecio = *(Servicio + 1);
+    int *pServicio = Servicio[0];
+    int *pPrecio = Servicio[1];
 
     switch (opcion3) {
-        case 1:
+        case 1111:
             *pPrecio = 10;
             contador += *pPrecio;
             printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
@@ -45,7 +45,7 @@ void servicios(int (*Servicio)[20]) {
             }
             break;
 
-        case 2:
+        case 2222:
             *pPrecio = 40;
             contador += *pPrecio;
             printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
@@ -55,7 +55,7 @@ void servicios(int (*Servicio)[20]) {
             }
             break;
 
-        case 3:
+        case 3333:
             *pPrecio = 90;
             contador += *pPrecio;
             printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
@@ -83,16 +83,17 @@ void servicios(int (*Servicio)[20]) {
     }
 }
 
-void mascotaFactura(int (*Servicio)[20], char (*Mascota)[10]) {
+void mascotaFactura(int Servicio[3][20], char Mascota[5][10]) {
     char idMascota[10];
     int i, j;
     int encontrado = 0;
+    int totalPrecios = 0;
 
     printf("Ingrese el ID de la mascota para generar la factura: ");
     scanf("%s", idMascota);
 
     for (i = 0; i < 5; i++) {
-        if (strcmp(*(Mascota + i), idMascota) == 0) {
+        if (strcmp(Mascota[i], idMascota) == 0) {
             encontrado = 1;
             break;
         }
@@ -100,73 +101,97 @@ void mascotaFactura(int (*Servicio)[20], char (*Mascota)[10]) {
 
     if (encontrado) {
         printf("\n***** FACTURA *****\n");
-        printf("ID de la mascota: %s\n", *(Mascota + i + 0));
+        printf("ID de la mascota: %s\n", *(Mascota + i));
         printf("Nombre de la mascota: %s\n", *(Mascota + i + 1));
         printf("Tipo de mascota: %s\n", *(Mascota + i + 2));
         printf("Edad de la mascota: %s\n", *(Mascota + i + 3));
         printf("Nombre del propietario: %s\n", *(Mascota + i + 4));
-        printf("\nServicios contratados:\n");
+
+        int *pServicio = Servicio[0];
+        int *pPrecio = Servicio[1];
 
         for (j = 0; j < 20; j++) {
-            if (*(*(Servicio + 0) + j) != 0) {
-                int servicioID = *(*(Servicio + 0) + j);
-                int servicioPrecio = *(*(Servicio + 1) + j);
+            if (*pServicio != 0) {
+                int servicioID = *pServicio;
+                int servicioPrecio = *pPrecio;
 
-                printf("Numero de servicio : %d\n", servicioID);
-                if (servicioID == 1)
-                {
-                    printf("Peluqueada \t$%d\n", servicioPrecio);
-                } else if (servicioID == 2){
-                    printf("Desparasitacion \t$%d\n", servicioPrecio);
-                } else if (servicioID == 3){
-                    printf("Adiestramiento \t$%d\n", servicioPrecio);
+                printf("Numero de servicio: %d\n", servicioID);
+                if (servicioID == 1111) {
+                    printf("Peluqueada: $%d\n", servicioPrecio);
+                } else if (servicioID == 2222) {
+                    printf("Desparasitacion: $%d\n", servicioPrecio);
+                } else if (servicioID == 3333) {
+                    printf("Adiestramiento: $%d\n", servicioPrecio);
                 }
-                    
+                totalPrecios += servicioPrecio;
             }
+            pServicio++;
+            pPrecio++;
         }
+        printf("Total: $%d\n\n", totalPrecios);
     }
 }
 
-void servicioFactura(int (*Servicio)[20], char (*Mascota)[10]) {
+void servicioFactura(int Servicio[3][20], char Mascota[5][10]) {
     int idServicio;
     int i, j;
     int encontrado = 0;
+    int totalPrecios = 0;
 
-    printf("Ingrese el numero del servicio para generar la factura: ");
+    printf("Ingrese el ID del servicio para generar la factura: ");
     scanf("%d", &idServicio);
 
-    for (j = 0; j < 20; j++) {
-        if (*(*(Servicio + 0) + j) == idServicio) {
+    printf("\n***** FACTURA *****\n");
+    printf("ID del servicio: %d\n", idServicio);
+
+    int *pServicio = Servicio[0];
+    int *pPrecio = Servicio[1];
+
+    for (i = 0; i < 20; i++) {
+        if (*pServicio == idServicio) {
             encontrado = 1;
             break;
         }
+        pServicio++;
+        pPrecio++;
     }
 
-    if (encontrado){
-        printf("\n***** FACTURA *****\n");
-        printf("ID del servicio: %d\n", *(*(Servicio + 0) + j));
-        printf("Precio del servicio: $%d\n", *(*(Servicio + 1) + j));
-
+    if (encontrado) {
         char idMascota[10];
-        int encontradoMascota = 0;
 
-        printf("\nIngrese el ID de la mascota para vincular con el servicio: ");
-        scanf("%s", idMascota);
-
-        for (i = 0; i < 5; i++) {
-            if (strcmp(*(Mascota + i), idMascota) == 0) {
-                encontradoMascota = 1;
+        for (j = 0; j < 5; j++) {
+            if (strcmp(Mascota[j], idMascota) == 0) {
                 break;
             }
         }
 
-        if (encontradoMascota) {
-            printf("\nDatos de la mascota:\n");
-            printf("ID de la mascota: %s\n", *(Mascota + i + 0));
-            printf("Nombre de la mascota: %s\n", *(Mascota + i + 1));
-            printf("Tipo de mascota: %s\n", *(Mascota + i + 2));
-            printf("Edad de la mascota: %s\n", *(Mascota + i + 3));
-            printf("Nombre del propietario: %s\n", *(Mascota + i + 4));
+        printf("ID de la mascota: %s\n", *(Mascota + i));
+        printf("Nombre de la mascota: %s\n", *(Mascota + i + 1));
+        printf("Tipo de mascota: %s\n", *(Mascota + i + 2));
+        printf("Edad de la mascota: %s\n", *(Mascota + i + 3));
+        printf("Nombre del propietario: %s\n", *(Mascota + i + 4));
+
+        int *pServicio = Servicio[0];
+        int *pPrecio = Servicio[1];
+
+        for (i = 0; i < 20; i++) {
+            if (*pServicio != 0) {
+                int servicioID = *pServicio;
+                int servicioPrecio = *pPrecio;
+
+                printf("Numero de servicio: %d\n", servicioID);
+                if (servicioID == 1111) {
+                    printf("Peluqueada: $%d\n", servicioPrecio);
+                } else if (servicioID == 2222) {
+                    printf("Desparasitacion: $%d\n", servicioPrecio);
+                } else if (servicioID == 3333) {
+                    printf("Adiestramiento: $%d\n", servicioPrecio);
+                }
+                totalPrecios += servicioPrecio;
+            }
+            pServicio++;
+            pPrecio++;
         }
-    }
+        printf("Total: $%d\n\n", totalPrecios);
+    } 
 }
