@@ -21,7 +21,6 @@ void datosMascota(char (*Mascota)[10]) {
 
 void servicios(int (*Servicio)[20]) {
     int opcion3, contador = 0;
-    char respuesta;
 
     servicios:
     printf("Elija el ID de los servicios que desea para su mascota:\n");
@@ -38,31 +37,16 @@ void servicios(int (*Servicio)[20]) {
         case 1111:
             *pPrecio = 10;
             contador += *pPrecio;
-            printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
-            scanf(" %c", &respuesta);
-            if (respuesta == 'S' || respuesta == 's') {
-                goto servicios;
-            }
             break;
 
         case 2222:
             *pPrecio = 40;
             contador += *pPrecio;
-            printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
-            scanf(" %c", &respuesta);
-            if (respuesta == 'S' || respuesta == 's') {
-                goto servicios;
-            }
             break;
 
         case 3333:
             *pPrecio = 90;
             contador += *pPrecio;
-            printf("Si desea agregar otro servicio escriba s, caso contrario escriba n: ");
-            scanf(" %c", &respuesta);
-            if (respuesta == 'S' || respuesta == 's') {
-                goto servicios;
-            }
             break;
 
         default:
